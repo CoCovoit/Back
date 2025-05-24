@@ -13,5 +13,9 @@ public class MappingProfile : Profile
 
         CreateMap<UtilisateurRequestDTO, Utilisateur>();
         CreateMap<Utilisateur, UtilisateurResponseDTO>();
+
+        CreateMap<TrajetRequestDTO, Trajet>();
+        CreateMap<TrajetAvecCoordonneesResquestDTO, Trajet>();
+        CreateMap<Trajet, TrajetResponseDTO>();
     }
 }

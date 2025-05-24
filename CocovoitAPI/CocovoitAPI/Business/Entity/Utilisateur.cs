@@ -19,6 +19,13 @@ public class Utilisateur
 
 public class Localisation
 {
+    public Localisation(string adresse, double longitude, double latitude)
+    {
+        Adresse = adresse;
+        Longitude = longitude;
+        Latitude = latitude;
+    }
+
     public long Id { get; set; }
     public string Adresse { get; set; } = string.Empty;
     public double Longitude { get; set; }

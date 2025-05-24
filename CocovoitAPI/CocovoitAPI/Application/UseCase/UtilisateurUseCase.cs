@@ -1,3 +1,4 @@
+using CocovoitAPI.Application.UseCase.Exception;
 using CocovoitAPI.Business.Entity;
 using CocovoitAPI.Business.Repository;
 
@@ -20,5 +21,18 @@ public class UtilisateurUseCase : IUtilisateurUseCase
     public async Task<List<Utilisateur>> FindAll()
     {
         return await _repo.FindAll();
+    }
+
+    public async Task<Utilisateur> FindById(long id)
+    {
+        Utilisateur? utilisateur = await _repo.FindById(id);
+        if (utilisateur != null)
+        {
+            return utilisateur;
+        }
+        else
+        {
+            throw new UtilisateurNotFoundException(id);
+        }
     }
 }

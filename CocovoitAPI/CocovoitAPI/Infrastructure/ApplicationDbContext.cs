@@ -45,25 +45,25 @@ public class ApplicationDbContext : DbContext
             .HasOne(t => t.Conducteur)
             .WithMany(u => u.TrajetsEnTantQueConducteur)
             .HasForeignKey(t => t.ConducteurId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Trajet>()
             .HasOne(t => t.LocalisationDepart)
             .WithMany()
             .HasForeignKey(t => t.LocalisationDepartId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Trajet>()
             .HasOne(t => t.LocalisationArrivee)
             .WithMany()
             .HasForeignKey(t => t.LocalisationArriveeId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Utilisateur>()
             .HasOne(u => u.Localisation)
             .WithMany()
             .HasForeignKey(u => u.LocalisationId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Cascade);
 
         base.OnModelCreating(modelBuilder);
     }

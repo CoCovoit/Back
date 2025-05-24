@@ -27,6 +27,10 @@ public class UtilisateurRestController : ControllerBase
             Utilisateur utilisateur = await _useCase.Create(await _mapper.ToEntity(requestDTO));
             return Created(nameof(UtilisateurResponseDTO), _mapper.ToDto(utilisateur));
         }
+        catch(KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);

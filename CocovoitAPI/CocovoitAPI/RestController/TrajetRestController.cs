@@ -1,3 +1,7 @@
+using CocovoitAPI.Application.UseCase;
+using CocovoitAPI.Business.Entity;
+using CocovoitAPI.RestController.Dto;
+using CocovoitAPI.RestController.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CocovoitAPI.RestController;
@@ -6,9 +10,41 @@ namespace CocovoitAPI.RestController;
 [Route("Trajets")]
 public class TrajetRestController : ControllerBase
 {
-    public TrajetRestController()
-    {
+    private readonly ITrajetUseCase useCase;
+    private readonly TrajetMapper mapper;
 
+    public TrajetRestController(ITrajetUseCase useCase, TrajetMapper mapper)
+    {
+        this.useCase = useCase;
+        this.mapper = mapper;
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<TrajetResponseDTO>> create([FromBody] TrajetRequestDTO requestDTO)
+    {
+        try
+        {
+            Trajet trajet = await useCase.Create(await mapper.ToEntity(requestDTO));
+            return Created(nameof(Trajet), mapper.ToDTO(trajet));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("Coordonnees")]
+    public async Task<ActionResult<TrajetResponseDTO>> createAvecCoordonnees([FromBody] TrajetAvecCoordonneesResquestDTO requestDTO)
+    {
+        try
+        {
+            Trajet trajet = await useCase.Create(await mapper.ToEntity(requestDTO));
+            return Created(nameof(Trajet), mapper.ToDTO(trajet));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
 

@@ -50,7 +50,7 @@ namespace CocovoitAPI.Migrations
                         column: x => x.LocalisationId,
                         principalTable: "Localisations",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -74,19 +74,19 @@ namespace CocovoitAPI.Migrations
                         column: x => x.LocalisationArriveeId,
                         principalTable: "Localisations",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Trajets_Localisations_LocalisationDepartId",
                         column: x => x.LocalisationDepartId,
                         principalTable: "Localisations",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Trajets_Utilisateurs_ConducteurId",
                         column: x => x.ConducteurId,
                         principalTable: "Utilisateurs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 

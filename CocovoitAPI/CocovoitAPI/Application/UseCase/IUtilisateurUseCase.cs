@@ -6,4 +6,5 @@ public interface IUtilisateurUseCase
 {
     Task<Utilisateur> Create(Utilisateur utilisateur);
     Task<List<Utilisateur>> FindAll();
+    Task<Utilisateur> FindById(long id);
 }

@@ -18,7 +18,7 @@ namespace CocovoitAPI.Migrations
                 .HasAnnotation("ProductVersion", "7.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("CocovoitAPI.Domain.models.Localisation", b =>
+            modelBuilder.Entity("CocovoitAPI.Business.Entity.Localisation", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace CocovoitAPI.Migrations
                     b.ToTable("Localisations");
                 });
 
-            modelBuilder.Entity("CocovoitAPI.Domain.models.Reservation", b =>
+            modelBuilder.Entity("CocovoitAPI.Business.Entity.Reservation", b =>
                 {
                     b.Property<long>("UtilisateurId")
                         .HasColumnType("bigint");
@@ -54,7 +54,7 @@ namespace CocovoitAPI.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("CocovoitAPI.Domain.models.Trajet", b =>
+            modelBuilder.Entity("CocovoitAPI.Business.Entity.Trajet", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,7 +86,7 @@ namespace CocovoitAPI.Migrations
                     b.ToTable("Trajets");
                 });
 
-            modelBuilder.Entity("CocovoitAPI.Domain.models.Utilisateur", b =>
+            modelBuilder.Entity("CocovoitAPI.Business.Entity.Utilisateur", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,15 +106,15 @@ namespace CocovoitAPI.Migrations
                     b.ToTable("Utilisateurs");
                 });
 
-            modelBuilder.Entity("CocovoitAPI.Domain.models.Reservation", b =>
+            modelBuilder.Entity("CocovoitAPI.Business.Entity.Reservation", b =>
                 {
-                    b.HasOne("CocovoitAPI.Domain.models.Trajet", "Trajet")
+                    b.HasOne("CocovoitAPI.Business.Entity.Trajet", "Trajet")
                         .WithMany("Reservations")
                         .HasForeignKey("TrajetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CocovoitAPI.Domain.models.Utilisateur", "Utilisateur")
+                    b.HasOne("CocovoitAPI.Business.Entity.Utilisateur", "Utilisateur")
                         .WithMany("Reservations")
                         .HasForeignKey("UtilisateurId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -125,24 +125,24 @@ namespace CocovoitAPI.Migrations
                     b.Navigation("Utilisateur");
                 });
 
-            modelBuilder.Entity("CocovoitAPI.Domain.models.Trajet", b =>
+            modelBuilder.Entity("CocovoitAPI.Business.Entity.Trajet", b =>
                 {
-                    b.HasOne("CocovoitAPI.Domain.models.Utilisateur", "Conducteur")
+                    b.HasOne("CocovoitAPI.Business.Entity.Utilisateur", "Conducteur")
                         .WithMany("TrajetsEnTantQueConducteur")
                         .HasForeignKey("ConducteurId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CocovoitAPI.Domain.models.Localisation", "LocalisationArrivee")
+                    b.HasOne("CocovoitAPI.Business.Entity.Localisation", "LocalisationArrivee")
                         .WithMany()
                         .HasForeignKey("LocalisationArriveeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CocovoitAPI.Domain.models.Localisation", "LocalisationDepart")
+                    b.HasOne("CocovoitAPI.Business.Entity.Localisation", "LocalisationDepart")
                         .WithMany()
                         .HasForeignKey("LocalisationDepartId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Conducteur");
@@ -152,22 +152,22 @@ namespace CocovoitAPI.Migrations
                     b.Navigation("LocalisationDepart");
                 });
 
-            modelBuilder.Entity("CocovoitAPI.Domain.models.Utilisateur", b =>
+            modelBuilder.Entity("CocovoitAPI.Business.Entity.Utilisateur", b =>
                 {
-                    b.HasOne("CocovoitAPI.Domain.models.Localisation", "Localisation")
+                    b.HasOne("CocovoitAPI.Business.Entity.Localisation", "Localisation")
                         .WithMany()
                         .HasForeignKey("LocalisationId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Localisation");
                 });
 
-            modelBuilder.Entity("CocovoitAPI.Domain.models.Trajet", b =>
+            modelBuilder.Entity("CocovoitAPI.Business.Entity.Trajet", b =>
                 {
                     b.Navigation("Reservations");
                 });
 
-            modelBuilder.Entity("CocovoitAPI.Domain.models.Utilisateur", b =>
+            modelBuilder.Entity("CocovoitAPI.Business.Entity.Utilisateur", b =>
                 {
                     b.Navigation("Reservations");
 

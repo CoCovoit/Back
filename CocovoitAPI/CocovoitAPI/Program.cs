@@ -22,6 +22,10 @@ builder.Services.AddScoped<UtilisateurMapper>();
 builder.Services.AddScoped<IUtilisateurUseCase, UtilisateurUseCase>();
 builder.Services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
 
+builder.Services.AddScoped<TrajetMapper>();
+builder.Services.AddScoped<ITrajetUseCase, TrajetUseCase>();
+builder.Services.AddScoped<ITrajetRespository, TrajetRepository>();
+
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
