@@ -1,8 +1,6 @@
-using CocovoitAPI.Application;
-using CocovoitAPI.Application.mappers;
-using CocovoitAPI.Application.Service;
-using CocovoitAPI.Domain.repositories;
-using CocovoitAPI.Infrastructure;
+using CocovoitAPI.Application.UseCase;
+using CocovoitAPI.Business.Repository;
+using CocovoitAPI.RestController.Mappers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,22 +14,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>();
 
-builder.Services.AddSingleton<OpenAiService>();
-builder.Services.AddScoped<IReportRepository, ReportRepository>();
-builder.Services.AddScoped<ReportService>();
-builder.Services.AddScoped<ReportMapper>();
+builder.Services.AddScoped<LocalisationMapper>();
+builder.Services.AddScoped<ILocalisationUseCase, LocalisationUseCase>();
+builder.Services.AddScoped<ILocalisationRepository, LocalisationRepository>();
 
-builder.Services.AddScoped<IFolderRepository, FolderRepository>();
-builder.Services.AddScoped<FolderService>();
-builder.Services.AddScoped<FolderMapper>();
-
-builder.Services.AddScoped<ITagRepository, TagRepository>();
-builder.Services.AddScoped<IFolderTagReporitory, FolderTagRepository>();
-builder.Services.AddScoped<TagService>();
-builder.Services.AddScoped<TagMapper>();
-builder.Services.AddScoped<FolderTagMapper>();
-
-builder.Services.AddHostedService<MigrationService>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

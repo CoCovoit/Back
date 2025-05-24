@@ -1,4 +1,4 @@
-﻿using CocovoitAPI.Domain.models;
+﻿using CocovoitAPI.Business.Entity;
 using Microsoft.EntityFrameworkCore;
 
 public class ApplicationDbContext : DbContext
