@@ -10,5 +10,8 @@ public class MappingProfile : Profile
     {
         CreateMap<LocalisationRequestDTO, Localisation>();
         CreateMap<Localisation, LocalisationResponseDTO>();
+
+        CreateMap<UtilisateurRequestDTO, Utilisateur>();
+        CreateMap<Utilisateur, UtilisateurResponseDTO>();
     }
 }

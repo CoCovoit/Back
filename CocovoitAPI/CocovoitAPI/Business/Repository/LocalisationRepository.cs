@@ -23,4 +23,9 @@ public class LocalisationRepository : ILocalisationRepository
     {
         return _dbContext.Localisations.ToListAsync();
     }
+
+    public async Task<Localisation?> FindById(long? id)
+    {
+        return await _dbContext.Localisations.FindAsync(id);
+    }
 }

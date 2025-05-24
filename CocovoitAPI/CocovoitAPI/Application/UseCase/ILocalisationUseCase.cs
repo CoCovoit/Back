@@ -6,4 +6,5 @@ public interface ILocalisationUseCase
 {
     Task<Localisation> Create(Localisation localisation);
     Task<List<Localisation>> FindAll();
+    Task<Localisation> FindById(long id);
 }

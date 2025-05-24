@@ -1,3 +1,4 @@
+using CocovoitAPI.Application.UseCase.Exception;
 using CocovoitAPI.Business.Entity;
 using CocovoitAPI.Business.Repository;
 
@@ -20,5 +21,18 @@ public class LocalisationUseCase : ILocalisationUseCase
     public async Task<List<Localisation>> FindAll()
     {
         return await _repo.FindAll();
+    }
+
+    public async Task<Localisation> FindById(long id)
+    {
+        Localisation? localisation = await _repo.FindById(id);
+        if (localisation != null)
+        {
+            return localisation;
+        }
+        else
+        {
+            throw new LocalisationNotFoundException(id);
+        }
     }
 }

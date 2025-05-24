@@ -1,3 +1,7 @@
+using CocovoitAPI.Application.UseCase;
+using CocovoitAPI.Business.Entity;
+using CocovoitAPI.RestController.Dto;
+using CocovoitAPI.RestController.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CocovoitAPI.RestController;
@@ -6,22 +10,22 @@ namespace CocovoitAPI.RestController;
 [Route("Utilisateurs")]
 public class UtilisateurRestController : ControllerBase
 {
-    /*private readonly ReportService _reportService;
-    private readonly ReportMapper _reportMapper;
+    private readonly UtilisateurMapper _mapper;
+    private readonly IUtilisateurUseCase _useCase;
 
-    public ReportController(ReportService reportService, ReportMapper reportMapper)
+    public UtilisateurRestController(UtilisateurMapper localizationMapper, IUtilisateurUseCase useCase)
     {
-        _reportService = reportService;
-        _reportMapper = reportMapper;
+        _mapper = localizationMapper;
+        _useCase = useCase;
     }
 
     [HttpPost]
-    public async Task<ActionResult<ReportResponseDTO>> create([FromBody] ReportRequestDTO requestDTO)
+    public async Task<ActionResult<UtilisateurResponseDTO>> create([FromBody] UtilisateurRequestDTO requestDTO)
     {
         try
         {
-            Report response = await _reportService.save(_reportMapper.toEntity(requestDTO));
-            return Created(nameof(ReportResponseDTO), _reportMapper.toDTO(response));
+            Utilisateur utilisateur = await _useCase.Create(await _mapper.ToEntity(requestDTO));
+            return Created(nameof(UtilisateurResponseDTO), _mapper.ToDto(utilisateur));
         }
         catch (Exception ex)
         {
@@ -29,59 +33,10 @@ public class UtilisateurRestController : ControllerBase
         }
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ReportResponseDTO>> getById(long id)
+    [HttpGet]
+    public async Task<ActionResult<List<UtilisateurResponseDTO>>> Index()
     {
-        try
-        {
-            Report response = await _reportService.findById(id);
-            return Ok(_reportMapper.toDTO(response));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        List<Utilisateur> utilisateurs = await this._useCase.FindAll();
+        return utilisateurs.Select(u => _mapper.ToDto(u)).ToList();
     }
-
-    [HttpPost("GenerateResume")]
-    public async Task<ActionResult<string>> resumePrompt([FromBody] ReportResumePromptRequestDTO request)
-    {
-        try
-        {
-            string response = await _reportService.getResume(request);
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> delete(long id)
-    {
-        try
-        {
-            await _reportService.delete(id);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
-    [HttpPut]
-    public async Task<ActionResult<ReportResponseDTO>> update([FromBody] ReportUpdateRequestDTO requestDTO)
-    {
-        try
-        {
-            Report report = await _reportService.update(_reportMapper.toEntity(requestDTO));
-            return Ok(_reportMapper.toDTO(report));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }*/
 }

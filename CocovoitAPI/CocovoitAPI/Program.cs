@@ -18,6 +18,10 @@ builder.Services.AddScoped<LocalisationMapper>();
 builder.Services.AddScoped<ILocalisationUseCase, LocalisationUseCase>();
 builder.Services.AddScoped<ILocalisationRepository, LocalisationRepository>();
 
+builder.Services.AddScoped<UtilisateurMapper>();
+builder.Services.AddScoped<IUtilisateurUseCase, UtilisateurUseCase>();
+builder.Services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
+
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
