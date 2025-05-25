@@ -1,6 +1,7 @@
 using CocovoitAPI.Application.Exception;
 using CocovoitAPI.Business.Entity;
 using CocovoitAPI.Business.Repository;
+using CocovoitAPI.RestController.Dto;
 
 namespace CocovoitAPI.Application.UseCase;
 
@@ -31,5 +32,10 @@ public class TrajetUseCase : ITrajetUseCase
     public List<Trajet> FindByConducteur(long id)
     {
         return repo.FindByConducteur(id);
+    }
+
+    public List<Trajet> FindTrajetsProximite(double latitude, double longitude)
+    {
+        return repo.FindTrajetsProximite(latitude, longitude);
     }
 }

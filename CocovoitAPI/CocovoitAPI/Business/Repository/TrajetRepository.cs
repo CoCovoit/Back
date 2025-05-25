@@ -1,4 +1,5 @@
 using CocovoitAPI.Business.Entity;
+using CocovoitAPI.RestController.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace CocovoitAPI.Business.Repository;
@@ -34,4 +35,44 @@ public class TrajetRepository : ITrajetRespository
             .Include(t=> t.LocalisationArrivee)
             .FirstOrDefaultAsync(t => t.Id == id);
     }
+
+    public List<Trajet> FindTrajetsProximite(double latitude, double longitude)
+    {
+        const double rayonMetres = 100;
+
+        // Récupération des trajets avec leur localisation
+        var trajets = _context.Trajets
+            .Include(t => t.LocalisationDepart)
+            .Include(t => t.LocalisationArrivee)
+            .Include(t => t.Conducteur)
+            .ToList();
+
+        // Filtrage selon la distance
+        return trajets.Where(t =>
+            t.LocalisationDepart != null &&
+            DistanceEnMetres(latitude, longitude, t.LocalisationDepart.Latitude, t.LocalisationDepart.Longitude) <= rayonMetres
+        ).ToList();
+    }
+
+    private double DistanceEnMetres(double lat1, double lon1, double lat2, double lon2)
+    {
+        const double rayonTerre = 6371000; // rayon de la Terre en mètres
+
+        double dLat = DegresEnRadians(lat2 - lat1);
+        double dLon = DegresEnRadians(lon2 - lon1);
+
+        double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                   Math.Cos(DegresEnRadians(lat1)) * Math.Cos(DegresEnRadians(lat2)) *
+                   Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+
+        double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+        return rayonTerre * c;
+    }
+
+    private double DegresEnRadians(double degres)
+    {
+        return degres * (Math.PI / 180);
+    }
+
 }
