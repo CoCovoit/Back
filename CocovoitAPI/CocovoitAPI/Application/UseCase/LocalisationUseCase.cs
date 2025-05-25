@@ -1,4 +1,4 @@
-using CocovoitAPI.Application.UseCase.Exception;
+using CocovoitAPI.Application.Exception;
 using CocovoitAPI.Business.Entity;
 using CocovoitAPI.Business.Repository;
 

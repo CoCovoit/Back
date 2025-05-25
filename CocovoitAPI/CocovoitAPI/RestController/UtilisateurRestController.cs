@@ -11,14 +11,25 @@ namespace CocovoitAPI.RestController;
 public class UtilisateurRestController : ControllerBase
 {
     private readonly UtilisateurMapper _mapper;
+    private readonly TrajetMapper _trajetMapper;
     private readonly IUtilisateurUseCase _useCase;
+    private readonly ITrajetUseCase _tajetUseCase;
+    private readonly IReservationUseCase _reservationUseCase;
 
-    public UtilisateurRestController(UtilisateurMapper localizationMapper, IUtilisateurUseCase useCase)
+    public UtilisateurRestController(UtilisateurMapper localizationMapper, IUtilisateurUseCase useCase, ITrajetUseCase tajetUseCase, TrajetMapper trajetMapper, IReservationUseCase reservationUseCase)
     {
         _mapper = localizationMapper;
         _useCase = useCase;
+        _tajetUseCase = tajetUseCase;
+        _trajetMapper = trajetMapper;
+        _reservationUseCase = reservationUseCase;
     }
 
+    /// <summary>
+    /// Ajout d'utilisateur
+    /// </summary>
+    /// <param name="requestDTO"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ActionResult<UtilisateurResponseDTO>> create([FromBody] UtilisateurRequestDTO requestDTO)
     {
@@ -37,10 +48,36 @@ public class UtilisateurRestController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Liste des utilisateurs
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public async Task<ActionResult<List<UtilisateurResponseDTO>>> Index()
     {
         List<Utilisateur> utilisateurs = await this._useCase.FindAll();
-        return utilisateurs.Select(u => _mapper.ToDto(u)).ToList();
+        return Ok(utilisateurs.Select(u => _mapper.ToDto(u)).ToList());
+    }
+
+    /// <summary>
+    /// Retourne les trajets associés à un utilisateur (conducteur/passager)
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}/Trajets")]
+    public ActionResult<List<TrajetResponseDTO>> Trajets(int id)
+    {
+        List<Trajet> trajetsConducteur = _tajetUseCase.FindByConducteur(id);
+        List<Trajet> trajetsPassager = _reservationUseCase.FindByUtilisateur(id)
+            .Where(r => r.Trajet != null)
+            .Select(r => r.Trajet)
+            .ToList();
+
+        List<TrajetUtilisateurResponseDTO> response = trajetsConducteur
+            .Select(tc => _trajetMapper.ToDTO(tc, "C"))
+            .Concat(trajetsPassager.Select(tp=> _trajetMapper.ToDTO(tp, "P")))
+            .Distinct().ToList();
+
+        return Ok(response);
     }
 }

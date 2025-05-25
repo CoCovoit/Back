@@ -19,6 +19,11 @@ public class LocalisationRestController : ControllerBase
         _useCase = useCase;
     }
 
+    /// <summary>
+    /// Ajout de localisation
+    /// </summary>
+    /// <param name="requestDTO"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ActionResult<LocalisationResponseDTO>> create([FromBody] LocalisationRequestDTO requestDTO)
     {
@@ -33,6 +38,10 @@ public class LocalisationRestController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Liste des localisations
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public async Task<ActionResult<List<LocalisationResponseDTO>>> Index()
     {

@@ -19,8 +19,13 @@ public class TrajetRestController : ControllerBase
         this.mapper = mapper;
     }
 
+    /// <summary>
+    /// Ajout de trajet
+    /// </summary>
+    /// <param name="requestDTO"></param>
+    /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<TrajetResponseDTO>> create([FromBody] TrajetRequestDTO requestDTO)
+    public async Task<ActionResult<TrajetResponseDTO>> Create([FromBody] TrajetRequestDTO requestDTO)
     {
         try
         {
@@ -33,8 +38,13 @@ public class TrajetRestController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Ajout de trajet par coordonnées
+    /// </summary>
+    /// <param name="requestDTO"></param>
+    /// <returns></returns>
     [HttpPost("Coordonnees")]
-    public async Task<ActionResult<TrajetResponseDTO>> createAvecCoordonnees([FromBody] TrajetAvecCoordonneesResquestDTO requestDTO)
+    public async Task<ActionResult<TrajetResponseDTO>> CreateAvecCoordonnees([FromBody] TrajetAvecCoordonneesResquestDTO requestDTO)
     {
         try
         {
@@ -47,6 +57,18 @@ public class TrajetRestController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Récupère la liste des trajets disponibles à proximité d'une localisation
+    /// </summary>
+    /// <param name="latitude"></param>
+    /// <param name="longitude"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    [HttpGet("Proximite")]
+    public async Task<ActionResult<List<TrajetResponseDTO>>> Proximite([FromQuery] double latitude, [FromQuery] double longitude)
+    {
+        throw new NotImplementedException();
+    }
 
 
     /*private readonly FolderService _folderService;

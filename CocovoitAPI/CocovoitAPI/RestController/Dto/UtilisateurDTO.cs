@@ -8,6 +8,7 @@ public class UtilisateurRequestDTO
 
 public class UtilisateurResponseDTO
 {
+    public long Id { get; set; }
     public string Nom { get; set; }
     public LocalisationResponseDTO? localisation {  get; set; }
 }

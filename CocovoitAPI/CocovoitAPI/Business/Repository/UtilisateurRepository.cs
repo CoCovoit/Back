@@ -26,6 +26,6 @@ public class UtilisateurRepository : IUtilisateurRepository
 
     public async Task<Utilisateur?> FindById(long id)
     {
-        return await _dbContext.Utilisateurs.FindAsync(id);
+        return await _dbContext.Utilisateurs.Include(u => u.Localisation).FirstOrDefaultAsync(t => t.Id == id); ;
     }
 }

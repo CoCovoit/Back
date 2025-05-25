@@ -46,4 +46,13 @@ public class TrajetMapper
         responseDTO.Conducteur = utilisateurMapper.ToDto(trajet.Conducteur);
         return responseDTO;
     }
+
+    public TrajetUtilisateurResponseDTO ToDTO(Trajet trajet, string role)
+    {
+        TrajetUtilisateurResponseDTO responseDTO = mapper.Map<TrajetUtilisateurResponseDTO>(trajet);
+        responseDTO.LocalisationDepart = localisationMapper.ToDto(trajet.LocalisationDepart);
+        responseDTO.LocalisationArrivee = localisationMapper.ToDto(trajet.LocalisationArrivee);
+        responseDTO.Role = role;
+        return responseDTO;
+    }
 }

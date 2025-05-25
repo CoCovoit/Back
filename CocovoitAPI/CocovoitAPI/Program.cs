@@ -2,6 +2,7 @@ using CocovoitAPI.Application.UseCase;
 using CocovoitAPI.Business.Repository;
 using CocovoitAPI.RestController.Mappers;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>();
 
@@ -25,6 +31,10 @@ builder.Services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
 builder.Services.AddScoped<TrajetMapper>();
 builder.Services.AddScoped<ITrajetUseCase, TrajetUseCase>();
 builder.Services.AddScoped<ITrajetRespository, TrajetRepository>();
+
+builder.Services.AddScoped<ReservationMapper>();
+builder.Services.AddScoped<IReservationUseCase, ReservationUseCase>();
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 

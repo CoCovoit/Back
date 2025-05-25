@@ -31,3 +31,13 @@ public class TrajetResponseDTO
     public DateTime DateHeure { get; set; }
     public int NombrePlaces { get; set; }
 }
+
+public class TrajetUtilisateurResponseDTO
+{
+    public long Id { get; set; }
+    public DateTime DateHeure { get; set; }
+    public int NombrePlaces { get; set; }
+    public LocalisationResponseDTO? LocalisationDepart { get; set; }
+    public LocalisationResponseDTO? LocalisationArrivee { get; set; }
+    public string Role { get; set; }
+}
