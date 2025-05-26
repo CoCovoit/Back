@@ -68,6 +68,6 @@ public class TrajetRestController : ControllerBase
     public ActionResult<List<TrajetResponseDTO>> Proximite([FromQuery] double latitude, [FromQuery] double longitude)
     {
         List<Trajet> trajetsDisponible = useCase.FindTrajetsProximite(latitude, longitude);
-        return Ok(trajetsDisponible.Select(tb=>mapper.ToDTO(tb)));
+        return Ok(trajetsDisponible.Select(tb => mapper.ToDTO(tb)));
     }
 }

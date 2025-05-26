@@ -38,7 +38,7 @@ public class UtilisateurRestController : ControllerBase
             Utilisateur utilisateur = await _useCase.Create(await _mapper.ToEntity(requestDTO));
             return Created(nameof(UtilisateurResponseDTO), _mapper.ToDto(utilisateur));
         }
-        catch(KeyNotFoundException ex)
+        catch (KeyNotFoundException ex)
         {
             return NotFound(ex.Message);
         }
@@ -75,7 +75,7 @@ public class UtilisateurRestController : ControllerBase
 
         List<TrajetUtilisateurResponseDTO> response = trajetsConducteur
             .Select(tc => _trajetMapper.ToDTO(tc, "C"))
-            .Concat(trajetsPassager.Select(tp=> _trajetMapper.ToDTO(tp, "P")))
+            .Concat(trajetsPassager.Select(tp => _trajetMapper.ToDTO(tp, "P")))
             .Distinct().ToList();
 
         return Ok(response);
