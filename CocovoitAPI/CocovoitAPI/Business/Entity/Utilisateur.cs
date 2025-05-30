@@ -31,17 +31,3 @@ public class Localisation
     public double Longitude { get; set; }
     public double Latitude { get; set; }
 }
-
-/*
-public enum Role
-{
-    STANDARD,
-    ADMIN_RH
-}
-
-public enum RoleDansTrajet
-{
-    CONDUCTEUR,
-    PASSAGER
-}
-*/
