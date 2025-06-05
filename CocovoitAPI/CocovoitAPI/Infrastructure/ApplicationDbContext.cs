@@ -10,8 +10,10 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySql("Server=localhost;Database=cocovoit;User=root;Password=cocovoit;",
-            new MySqlServerVersion(new Version(8, 0, 21)));
+        optionsBuilder.UseMySql(
+            "Server=127.0.0.1;Database=cocovoit;User=root;Password=password;SslMode=None;",
+            ServerVersion.AutoDetect("Server=127.0.0.1;Database=cocovoit;User=root;Password=password;SslMode=None;")
+        );
         //optionsBuilder.UseMySql("Server=mysql;Database=cocovoit;User=root;Password=cocovoit;",
         //    new MySqlServerVersion(new Version(8, 0, 21)),
         //    mysqlOptions =>

@@ -23,7 +23,7 @@ public class UtilisateurMapper
 
     public async Task<Utilisateur> ToEntity(UtilisateurRequestDTO requestDTO)
     {
-        Utilisateur utilisateur = _mapper.Map<Utilisateur>(requestDTO);
+        var utilisateur = _mapper.Map<Utilisateur>(requestDTO);
         utilisateur.Localisation = await _localisationUseCase.FindById(requestDTO.LocalisationId);
         return utilisateur;
     }
