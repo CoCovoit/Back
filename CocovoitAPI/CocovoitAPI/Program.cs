@@ -3,6 +3,9 @@ using CocovoitAPI.Business.Repository;
 using CocovoitAPI.RestController.Mappers;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using CocovoitAPI.Application.Bus;
+using CocovoitAPI.Infrastructure.Configuration;
+using CocovoitAPI.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +38,9 @@ builder.Services.AddScoped<ITrajetRespository, TrajetRepository>();
 builder.Services.AddScoped<ReservationMapper>();
 builder.Services.AddScoped<IReservationUseCase, ReservationUseCase>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+
+builder.Services.Configure<KafkaSettings>(builder.Configuration.GetSection("Kafka"));
+builder.Services.AddSingleton<IEventBus, KafkaEventBus>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
