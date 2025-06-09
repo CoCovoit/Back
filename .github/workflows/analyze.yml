@@ -47,9 +47,9 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
-      - name: Install dotCover
+      - name: Install dotnet-coverage
         shell: powershell
-        run: dotnet tool install --global JetBrains.dotCover.CommandLineTools
+        run: dotnet tool install --global dotnet-coverage
 
       - name: Begin SonarQube analysis
         env:
@@ -65,12 +65,7 @@ jobs:
       - name: Run dotCover test coverage
         shell: powershell
         run: |
-          mkdir coverage
-          dotnet dotcover test `
-            --dcReportType=HTML `
-            --output=dotCover.Output.html `
-            --targetExecutable="dotnet" `
-            --targetArguments="test --no-build"
+          dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
 
       - name: End SonarCloud analysis
         env:
