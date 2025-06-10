@@ -1,5 +1,5 @@
 # GitHub actions to build and test the .NET project
-name: .NET Build and Test
+name: .NET CICD Pipeline
 on:
   push:
     branches:
