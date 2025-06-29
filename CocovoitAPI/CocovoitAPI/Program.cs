@@ -9,6 +9,19 @@ using CocovoitAPI.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// CORS - Autoriser tout
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -58,6 +71,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Utiliser la politique CORS
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
