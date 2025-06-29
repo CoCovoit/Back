@@ -7,7 +7,10 @@ namespace CocovoitAPI.Business.Entity;
 public class Utilisateur
 {
     public long Id { get; set; }
+    
     public string Nom { get; set; } = string.Empty;
+    
+    public required string Email { get; set; }
 
     public long? LocalisationId { get; set; }
     public Localisation? Localisation { get; set; }

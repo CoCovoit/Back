@@ -10,20 +10,20 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySql("Server=localhost;Database=cocovoit;User=root;Password=cocovoit;",
-            new MySqlServerVersion(new Version(8, 0, 21)));
-        //optionsBuilder.UseMySql("Server=mysql;Database=cocovoit;User=root;Password=cocovoit;",
-        //    new MySqlServerVersion(new Version(8, 0, 21)),
-        //    mysqlOptions =>
-        //    {
-        //        mysqlOptions.EnableRetryOnFailure(
-        //              maxRetryCount: 10, // Nombre maximum de tentatives
-        //              maxRetryDelay: TimeSpan.FromSeconds(10), // Délai maximal entre les tentatives
-        //              errorNumbersToAdd: null // Ajouter des codes d'erreur spécifiques si nécessaire
-        //        );
-        //    })
-        //.EnableSensitiveDataLogging()
-        //.LogTo(Console.WriteLine);
+        // optionsBuilder.UseMySql("Server=localhost;Database=cocovoit;User=root;Password=cocovoit;",
+        //     new MySqlServerVersion(new Version(8, 0, 21)));
+        optionsBuilder.UseMySql("Server=mysql;Database=cocovoit;User=root;Password=cocovoit;",
+           new MySqlServerVersion(new Version(8, 0, 21)),
+           mysqlOptions =>
+           {
+               mysqlOptions.EnableRetryOnFailure(
+                     maxRetryCount: 10, // Nombre maximum de tentatives
+                     maxRetryDelay: TimeSpan.FromSeconds(10), // Délai maximal entre les tentatives
+                     errorNumbersToAdd: null // Ajouter des codes d'erreur spécifiques si nécessaire
+               );
+           })
+        .EnableSensitiveDataLogging()
+        .LogTo(Console.WriteLine);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
