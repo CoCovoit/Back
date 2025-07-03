@@ -34,8 +34,12 @@ services:
       - "9100:9100"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - LOKI_URL=http://loki:3100
     depends_on:
       - mysql
+    volumes:
+      - logs:/var/log/cocovoit
 
 volumes:
   mysql_data:
+  logs:

@@ -1,0 +1,22 @@
+logging {
+  level = "info"
+}
+
+loki.source.file "api_logs" {
+  targets    = ["/var/log/cocovoit/*.log"]
+  labels     = { job = "cocovoit" }
+  forward_to = [loki.write.loki.receiver]
+}
+
+# Export des logs du système présents dans /var/log
+loki.source.file "system_logs" {
+  targets    = ["/var/log/syslog", "/var/log/*.log"]
+  labels     = { job = "system" }
+  forward_to = [loki.write.loki.receiver]
+}
+
+loki.write "loki" {
+  endpoint {
+    url = env("LOKI_URL")
+  }
+}

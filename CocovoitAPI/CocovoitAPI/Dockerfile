@@ -26,8 +26,19 @@ RUN apt-get update \
     && apt-get purge -y --auto-remove wget \
     && rm -rf /var/lib/apt/lists/*
 
+# Installation de Grafana Alloy pour l'envoi des logs vers Loki
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl ca-certificates \
+    && curl -fsSL -o /usr/local/bin/alloy \
+        https://github.com/grafana/alloy/releases/latest/download/alloy-linux-amd64 \
+    && chmod +x /usr/local/bin/alloy \
+    && apt-get purge -y --auto-remove curl \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /app/out ./
+COPY alloy.yml /etc/alloy/alloy.yml
+RUN mkdir -p /var/log/cocovoit
 EXPOSE 80 9100
 
-# Démarrage de l'API et de node_exporter
-ENTRYPOINT ["sh", "-c", "node_exporter & exec dotnet CocovoitAPI.dll"]
+# Démarrage de l'API, de node_exporter et d'Alloy avec log vers /var/log/cocovoit
+ENTRYPOINT ["sh", "-c", "node_exporter & alloy run /etc/alloy/alloy.yml & dotnet CocovoitAPI.dll 2>&1 | tee -a /var/log/cocovoit/api.log"]
