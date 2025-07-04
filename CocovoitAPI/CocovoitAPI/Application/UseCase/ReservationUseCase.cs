@@ -30,14 +30,29 @@ public class ReservationUseCase : IReservationUseCase
         {
             throw new ReservationAllReadyExistException();
         }
+        
         var saved = await reservationRepository.Create(reservation);
+    
+        var reservationComplete = await reservationRepository.GetWithDetailsAsync(
+            saved.UtilisateurId, 
+            saved.TrajetId
+        );
+    
+        var detailsTrajet = new DetailsTrajetDto(
+            AdresseDepart: reservationComplete.Trajet.LocalisationDepart.Adresse,
+            AdresseArrivee: reservationComplete.Trajet.LocalisationArrivee.Adresse,
+            DateHeure: reservationComplete.Trajet.DateHeure,
+            NombrePlaces: reservationComplete.Trajet.NombrePlaces,
+            NomConducteur: reservationComplete.Trajet.Conducteur.Nom,
+            EmailConducteur: reservationComplete.Trajet.Conducteur.Email
+        );
 
         var evt = new ReservationCreatedEvent(
             TrajetId: saved.TrajetId,
             UtilisateurId: saved.UtilisateurId,
-            EmailUtilisateur: saved.Utilisateur.Email,
+            EmailUtilisateur: reservationComplete.Utilisateur.Email,
             DateReservation: DateTime.UtcNow,
-            DetailsTrajet:  "Ici on mettra le détail du trajet" // TODO
+            DetailsTrajet: detailsTrajet
         );
 
         var payload = JsonSerializer.Serialize(evt);
