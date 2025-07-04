@@ -25,7 +25,7 @@ public class LocalisationRestController : ControllerBase
     /// <param name="requestDTO"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<LocalisationResponseDTO>> create([FromBody] LocalisationRequestDTO requestDTO)
+    public async Task<ActionResult<LocalisationResponseDTO>> Create([FromBody] LocalisationRequestDTO requestDTO)
     {
         try
         {

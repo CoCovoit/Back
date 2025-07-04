@@ -38,7 +38,9 @@ public class TrajetRepository : ITrajetRespository
 
     public List<Trajet> FindTrajetsProximite(double latitude, double longitude)
     {
-        const double rayonMetres = 100;
+        DateTime now = DateTime.Now;
+
+        const double rayonMetres = 1000;
 
         // Récupération des trajets avec leur localisation
         var trajets = _context.Trajets
@@ -49,8 +51,9 @@ public class TrajetRepository : ITrajetRespository
 
         // Filtrage selon la distance
         return trajets.Where(t =>
-            t.LocalisationDepart != null &&
-            DistanceEnMetres(latitude, longitude, t.LocalisationDepart.Latitude, t.LocalisationDepart.Longitude) <= rayonMetres
+            t.LocalisationDepart != null && 
+            t.DateHeure > now.AddDays(-1)
+            && DistanceEnMetres(latitude, longitude, t.LocalisationDepart.Latitude, t.LocalisationDepart.Longitude) <= rayonMetres
         ).ToList();
     }
 
