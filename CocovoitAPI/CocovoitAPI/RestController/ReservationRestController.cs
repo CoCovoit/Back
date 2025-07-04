@@ -25,7 +25,7 @@ public class ReservationRestController : ControllerBase
     /// <param name="requestDTO"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<ReservationResponseDTO>> create([FromBody] ReservationRequestDTO requestDTO)
+    public async Task<ActionResult<ReservationResponseDTO>> Create([FromBody] ReservationRequestDTO requestDTO)
     {
         try
         {
