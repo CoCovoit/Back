@@ -33,4 +33,19 @@ public class ReservationRepository : IReservationRepository
             .Where(r => r.UtilisateurId == id)
             .ToList();
     }
+    
+    public async Task<Reservation> GetWithDetailsAsync(long utilisateurId, long trajetId)
+    {
+        return await dbContext.Reservations
+                   .Include(r => r.Utilisateur)
+                   .Include(r => r.Trajet)
+                   .ThenInclude(t => t.LocalisationDepart)
+                   .Include(r => r.Trajet)
+                   .ThenInclude(t => t.LocalisationArrivee)
+                   .Include(r => r.Trajet)
+                   .ThenInclude(t => t.Conducteur)
+                   .FirstOrDefaultAsync(r => r.TrajetId == trajetId 
+                                             && r.UtilisateurId == utilisateurId)
+               ?? throw new Exception("Réservation non trouvée");
+    }
 }
