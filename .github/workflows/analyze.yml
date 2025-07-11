@@ -65,7 +65,7 @@ jobs:
       - name: Run dotnet-coverage test coverage
         shell: powershell
         run: |
-          dotnet-coverage collect "dotnet test ./CocovoitAPI --no-build" -f xml -o "coverage.xml"
+          dotnet-coverage collect "dotnet test ./CocovoitAPI/CocovoitAPITest --no-build" -f xml -o "coverage.xml"
 
       - name: End SonarCloud analysis
         env:
