@@ -34,7 +34,22 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
-builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddDbContext<ApplicationDbContext>(options=>
+     //options.UseMySql("Server=localhost;Database=cocovoit;User=root;Password=cocovoit;",
+     //    new MySqlServerVersion(new Version(8, 0, 21)))
+    options.UseMySql("Server=mysql;Database=cocovoit;User=root;Password=cocovoit;",
+           new MySqlServerVersion(new Version(8, 0, 21)),
+           mysqlOptions =>
+           {
+               mysqlOptions.EnableRetryOnFailure(
+                     maxRetryCount: 10, // Nombre maximum de tentatives
+                     maxRetryDelay: TimeSpan.FromSeconds(10), // Délai maximal entre les tentatives
+                     errorNumbersToAdd: null // Ajouter des codes d'erreur spécifiques si nécessaire
+               );
+           })
+        .EnableSensitiveDataLogging()
+        .LogTo(Console.WriteLine)
+);
 
 builder.Services.AddScoped<LocalisationMapper>();
 builder.Services.AddScoped<ILocalisationUseCase, LocalisationUseCase>();

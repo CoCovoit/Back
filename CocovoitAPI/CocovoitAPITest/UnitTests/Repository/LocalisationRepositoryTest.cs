@@ -1,19 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
-using Moq;
 using CocovoitAPI.Business.Entity;
 using CocovoitAPI.Business.Repository;
+using System;
 
-namespace CocovoitAPITest.UnitTests.Repository
+namespace CocovoitAPITest.IntegrationTests.Repository
 {
     public class LocalisationRepositoryTests
     {
-        private readonly Mock<ILocalisationRepository> _mockRepo;
+        private readonly ApplicationDbContext _context;
+        private readonly LocalisationRepository _repository;
 
         public LocalisationRepositoryTests()
         {
-            _mockRepo = new Mock<ILocalisationRepository>();
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // 🔁 Important pour éviter cache entre tests
+            .Options;
+
+            _context = new ApplicationDbContext(options);
+            _context.Database.EnsureDeleted(); // Nettoyage (souvent redondant avec Guid)
+            _context.Database.EnsureCreated(); // Création
+
+            _repository = new LocalisationRepository(_context);
         }
 
         [Fact]
@@ -21,33 +31,26 @@ namespace CocovoitAPITest.UnitTests.Repository
         {
             // Arrange
             var localisation = new Localisation("1 rue de test", 1.1, 2.2);
-            _mockRepo.Setup(repo => repo.Create(It.IsAny<Localisation>()))
-                     .ReturnsAsync((Localisation loc) => loc);
 
             // Act
-            var result = await _mockRepo.Object.Create(localisation);
+            var result = await _repository.Create(localisation);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(localisation.Adresse, result.Adresse);
-            Assert.Equal(localisation.Longitude, result.Longitude);
-            Assert.Equal(localisation.Latitude, result.Latitude);
+            Assert.Equal("1 rue de test", result.Adresse);
+            Assert.Equal(1.1, result.Longitude);
+            Assert.Equal(2.2, result.Latitude);
         }
 
         [Fact]
         public async Task FindAll_ShouldReturnListOfLocalisations()
         {
             // Arrange
-            var expectedList = new List<Localisation>
-            {
-                new Localisation("A", 1.0, 2.0),
-                new Localisation("B", 3.0, 4.0)
-            };
-
-            _mockRepo.Setup(repo => repo.FindAll()).ReturnsAsync(expectedList);
+            await _repository.Create(new Localisation("A", 1.0, 2.0));
+            await _repository.Create(new Localisation("B", 3.0, 4.0));
 
             // Act
-            var result = await _mockRepo.Object.FindAll();
+            var result = await _repository.FindAll();
 
             // Assert
             Assert.NotNull(result);
@@ -58,13 +61,12 @@ namespace CocovoitAPITest.UnitTests.Repository
         public void FindByCoordonnees_ShouldReturnCorrectLocalisation()
         {
             // Arrange
-            var expected = new Localisation("Coordonnée A", 10.0, 20.0);
-
-            _mockRepo.Setup(repo => repo.FindByCoordonnees(10.0, 20.0))
-                     .Returns(expected);
+            var localisation = new Localisation("Coordonnée A", 10.0, 20.0);
+            _context.Localisations.Add(localisation);
+            _context.SaveChanges();
 
             // Act
-            var result = _mockRepo.Object.FindByCoordonnees(10.0, 20.0);
+            var result = _repository.FindByCoordonnees(10.0, 20.0);
 
             // Assert
             Assert.NotNull(result);
@@ -75,27 +77,23 @@ namespace CocovoitAPITest.UnitTests.Repository
         public async Task FindById_ShouldReturnLocalisation_WhenExists()
         {
             // Arrange
-            var expected = new Localisation("Adresse", 1.1, 2.2) { Id = 42 };
-
-            _mockRepo.Setup(repo => repo.FindById(42))
-                     .ReturnsAsync(expected);
+            var loc = new Localisation("Adresse", 1.1, 2.2);
+            _context.Localisations.Add(loc);
+            await _context.SaveChangesAsync();
 
             // Act
-            var result = await _mockRepo.Object.FindById(42);
+            var result = await _repository.FindById(loc.Id);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(42, result?.Id);
+            Assert.Equal(loc.Id, result?.Id);
         }
 
         [Fact]
         public async Task FindById_ShouldReturnNull_WhenNotFound()
         {
-            // Arrange
-            _mockRepo.Setup(repo => repo.FindById(999)).ReturnsAsync((Localisation?)null);
-
             // Act
-            var result = await _mockRepo.Object.FindById(999);
+            var result = await _repository.FindById(999);
 
             // Assert
             Assert.Null(result);
