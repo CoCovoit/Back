@@ -23,6 +23,7 @@ public class TrajetRepository : ITrajetRespository
             .Include(t => t.LocalisationDepart)
             .Include(t=> t.LocalisationArrivee)
             .Include(t=> t.Conducteur.Localisation)
+            .Include(t => t.Reservations)
             .Where(t => t.ConducteurId == id)
             .ToList();
     }
@@ -47,6 +48,7 @@ public class TrajetRepository : ITrajetRespository
             .Include(t => t.LocalisationDepart)
             .Include(t => t.LocalisationArrivee)
             .Include(t => t.Conducteur)
+            .Include(t => t.Reservations)
             .ToList();
 
         // Filtrage selon la distance
