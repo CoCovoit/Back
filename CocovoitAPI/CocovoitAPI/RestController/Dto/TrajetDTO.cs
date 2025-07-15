@@ -40,4 +40,5 @@ public class TrajetUtilisateurResponseDTO
     public LocalisationResponseDTO? LocalisationDepart { get; set; }
     public LocalisationResponseDTO? LocalisationArrivee { get; set; }
     public string Role { get; set; }
+    public int NbrReservation { get; set; }
 }

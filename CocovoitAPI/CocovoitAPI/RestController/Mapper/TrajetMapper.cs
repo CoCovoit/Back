@@ -53,6 +53,7 @@ public class TrajetMapper
         responseDTO.LocalisationDepart = localisationMapper.ToDto(trajet.LocalisationDepart);
         responseDTO.LocalisationArrivee = localisationMapper.ToDto(trajet.LocalisationArrivee);
         responseDTO.Role = role;
+        responseDTO.NbrReservation = trajet.Reservations.Count;
         return responseDTO;
     }
 }
